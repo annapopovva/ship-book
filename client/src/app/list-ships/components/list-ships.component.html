@@ -1,0 +1,47 @@
+<section fxLayoutAlign="center center"
+          fxLayout="column"> 
+
+  <mat-form-field appearance="standard">
+    <mat-icon matPrefix> search </mat-icon>
+    <mat-label> Search for a ship by name or imo  </mat-label>
+    <input type="search" 
+            matInput 
+            [(ngModel)]="searchShip"/>
+  </mat-form-field>
+  
+  <article fxFlex="80" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center">
+    
+    <!-- ------------------------   RENDER SHIPS    ------------------------ -->
+    <mat-card *ngFor="let ship of ships | filter: searchShip" fxFlex="calc(33%-25px)" fxFlex.lt-md="calc(50%-25px)">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-card-header>
+              <mat-card-title> {{ ship.name }} </mat-card-title>
+              <mat-card-subtitle> {{ ship.imo }} </mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-actions fxLayoutGap="1rem">
+                <a mat-mini-fab color="primary" [routerLink]="['/edit', ship._id]">
+                    <mat-icon matTooltip="Edit ship's details"> edit </mat-icon>
+                </a>
+                <button mat-mini-fab
+                        color="warn"
+                        [disabled]="ships.length < 1"
+                        (click)="openDeleteDialog(ship._id)"> 
+                    <mat-icon matTooltip="Delete this ship"> delete </mat-icon> 
+                </button>
+            </mat-card-actions>
+        </div>
+
+        <carousel [images]="ship.pictures" objectFit="contain" id="carousel"></carousel>
+        
+        <mat-card-content fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <p> Type: {{ ship.type }} </p>
+            <p> Owner: {{ ship.owner }} </p>
+            <p> Contact: {{ ship.email }} </p>
+        </mat-card-content>
+        
+    </mat-card>
+        
+  </article>
+    
+</section>

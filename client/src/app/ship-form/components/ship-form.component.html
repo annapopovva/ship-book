@@ -1,0 +1,132 @@
+<section fxLayout="row"
+        fxLayout.lt-md="column"
+        fxLayoutWrap
+        fxLayoutGap="20px"
+        fxLayoutAlign="space-around center">
+         
+    <picture fxLayoutAlign="center" fxFlex="30%">
+        <img fxFlex="90%" fxFlex.lt-md="50%" src="../../../assets/pictures/ship-wheel.png">
+    </picture>
+
+    <mat-card fxLayout="column" fxFlex="30%" fxLayoutAlign="start stretch">
+        <mat-card-header>
+            <mat-card-title> Information about the ship </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="shipForm"
+                id="shipForm"
+                (submit)="submitForm()"
+                novalidate
+                fxLayout="column"
+                fxLayoutGap="1rem"
+                enctype="multipart/form-data">
+
+                <mat-form-field appearance="standard">
+                    <mat-icon matPrefix> article </mat-icon>
+                    <mat-label> Name </mat-label>
+                    <input matInput 
+                        type="text"
+                        placeholder="Ship's name is..."
+                        formControlName="name">
+                    <mat-error *ngIf="shipForm?.get('name')?.touched && shipForm?.get('name')?.invalid">
+                        Please enter ship's name! 
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="standard">
+                    <mat-icon matPrefix> numbers </mat-icon>
+                    <mat-label> IMO < seven digits > </mat-label>
+                    <input matInput 
+                        type="string"
+                        placeholder="The unique identifier for the ship is..."
+                        formControlName="imo">
+                    <mat-hint>Example: IMO < 1234567 > </mat-hint>
+                    <mat-error *ngIf="shipForm?.get('imo')?.touched && shipForm?.get('imo')?.invalid">
+                        Please enter the unique identifier (IMO number) for the ship using one of the allowed types:
+                        <br> IMO < seven digits > OR
+                        imo < seven digits > OR
+                        <br> IMO< seven digits > OR
+                        Imo< seven digits > OR
+                        < seven digits >
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="standard">
+                    <mat-icon matPrefix> group_work </mat-icon>
+                    <mat-label> Select ship's type </mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option value="tanker"> Tanker </mat-option>
+                        <mat-option value="container"> Container ship </mat-option>
+                        <mat-option value="cruise"> Cruise </mat-option>
+                        <mat-option value="other"> Other </mat-option>
+                    </mat-select>
+                    </mat-form-field> 
+
+                <mat-form-field appearance="standard">
+                    <mat-icon matPrefix> account_box </mat-icon>
+                    <mat-label> Owner </mat-label>
+                    <input matInput 
+                        type="text"
+                        placeholder="Ship's owner is..."
+                        formControlName="owner">
+                    <mat-error *ngIf="shipForm?.get('owner')?.touched && shipForm?.get('owner')?.invalid">
+                        Please enter the name of ship's owner!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="standard">
+                    <mat-icon matPrefix> email </mat-icon>
+                    <mat-label> Email  </mat-label>
+                    <input matInput 
+                        type="email"
+                        placeholder="Email for contact is..."
+                        formControlName="email">
+                    <mat-hint> The email must be @icb.bg, @gmail.com or @hotmail.com </mat-hint>
+                    <mat-error *ngIf="(shipForm?.get('email')?.dirty || shipForm?.get('email')?.touched)
+                                     && shipForm?.get('email')?.invalid">
+                        Please enter a valid email: @icb.bg, @gmail.com or @hotmail.com!
+                    </mat-error>
+                </mat-form-field>
+
+                <input type="file" 
+                        #fileInput 
+                        accept="image/*" 
+                        formControlName="pictures" 
+                        (change)="onUploadPictures($event)" 
+                        multiple
+                        fxHide />
+                <button mat-mini-fab 
+                        type="button"
+                        color="primary"
+                        (click)="fileInput.click()"
+                        matTooltip="Upload pictures of the ship"
+                        matTooltipPosition="right">
+                    <mat-icon> local_see </mat-icon>
+                </button>
+                <carousel *ngIf="ship.pictures" [images]="ship.pictures" objectFit="contain" id="carousel"></carousel>
+                <carousel *ngIf="showCarousel" (click)="onDeletePicture($event, index)" [images]="addedPictures" objectFit="contain" id="carousel"></carousel>
+
+                <mat-card-actions fxLayoutAlign="space-between center" >
+                    
+                        <button mat-raised-button 
+                                color="primary"
+                                fxFlex="50"
+                                type="submit">
+                            Save
+                        </button>
+                
+                        <a mat-raised-button 
+                            color="basic"
+                            fxFlex="50" 
+                            routerLink="/ships"> 
+                            Cancel 
+                        </a>
+    
+                </mat-card-actions>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+
+</section>
